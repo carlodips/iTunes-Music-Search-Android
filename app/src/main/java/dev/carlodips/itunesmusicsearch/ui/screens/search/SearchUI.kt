@@ -1,4 +1,4 @@
-package dev.carlodips.itunesmusicsearch.ui
+package dev.carlodips.itunesmusicsearch.ui.screens.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -22,6 +20,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -39,7 +38,8 @@ data class SearchUIModel(
 fun SearchScreen(
     modifier: Modifier = Modifier,
     uiModel: SearchUIModel,
-    onSearchClick: () -> Unit = {},
+    onSearchClick: () -> Unit,
+    navigateToDetails: (result: SearchResult) -> Unit
 ) {
     Surface(modifier = modifier.wrapContentSize()) {
         Column(
@@ -69,12 +69,13 @@ fun SearchScreen(
             ) {
                 itemsIndexed(uiModel.results) { index, item ->
                     Spacer(modifier = Modifier.height(16.dp))
-                    /*ResetTrackerItem(
+
+                    ResultItem(
                         bean = item,
-                        onEditClicked = { onEditClicked(item) },
-                        onDeleteClicked = { onDeleteClicked(item) }
-                    )*/
-                    ResultItem(bean = item)
+                        onItemClick = {
+                            navigateToDetails.invoke(item)
+                        }
+                    )
 
                     if (index == uiModel.results.lastIndex) {
                         Spacer(modifier = Modifier.height(16.dp))
@@ -88,9 +89,14 @@ fun SearchScreen(
 @Composable
 fun ResultItem(
     modifier: Modifier = Modifier,
-    bean: SearchResult
+    bean: SearchResult,
+    onItemClick: () -> Unit
 ) {
-    BaseCard(modifier = modifier.padding(horizontal = 16.dp)) {
+    BaseCard(
+        modifier = modifier.padding(horizontal = 16.dp),
+        onClick = onItemClick,
+        isEnabled = true
+    ) {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -103,16 +109,14 @@ fun ResultItem(
                     .padding(start = 16.dp)
                     .align(Alignment.CenterVertically),
                 model = bean.artworkThumbnail,
-                contentDescription = null,
+                placeholder = painterResource(id = R.drawable.ic_placeholder),
+                contentDescription = null
             )
 
             Column(
                 modifier = modifier
                     .wrapContentHeight()
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 12.dp
-                    )
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
                     .weight(1f)
             ) {
                 Text(
@@ -128,10 +132,7 @@ fun ResultItem(
             Column(
                 modifier = modifier
                     .wrapContentSize()
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 12.dp
-                    )
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
                     .align(Alignment.CenterVertically)
             ) {
                 Text(

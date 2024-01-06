@@ -1,4 +1,4 @@
-package dev.carlodips.itunesmusicsearch.ui
+package dev.carlodips.itunesmusicsearch.ui.screens.search
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList

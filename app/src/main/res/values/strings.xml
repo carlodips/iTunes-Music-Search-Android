@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">iTunesMusicSearchKotlin</string>
+    <string name="app_name">iTunes Music Search</string>
     <string name="search">Search</string>
+    <string name="artist_name">Artist Name</string>
+    <string name="track_name">Track Name</string>
+    <string name="collection_name">Collection Name</string>
+    <string name="track_time">Track Time</string>
+    <string name="track_price">Track Price</string>
+    <string name="genre">Genre</string>
+    <string name="track_explicitness">Track Explicitness</string>
+    <string name="release_date">Release Date</string>
 </resources>
