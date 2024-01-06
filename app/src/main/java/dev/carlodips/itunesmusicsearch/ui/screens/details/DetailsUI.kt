@@ -142,7 +142,7 @@ fun DetailsScreen(
                 Text(
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.bodyLarge,
-                    text = bean.getDisplayTrackTime()
+                    text = bean.getFormattedTrackTime()
                 )
             }
 

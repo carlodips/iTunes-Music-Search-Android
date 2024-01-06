@@ -28,18 +28,16 @@ data class SearchResult(
     val collectionViewUrl: String
 ): Parcelable {
 
-    fun getDisplayTrackTime(): String {
-        // long minutes = (milliseconds / 1000) / 60
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(trackTimeMillis)
+    fun getFormattedTrackTime(): String {
+        val millis = trackTimeMillis
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(millis)
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(millis) -
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
 
-        // long seconds = (milliseconds / 1000)
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(trackTimeMillis)
-
-        return if (seconds < 10) {
-            "$minutes:0$seconds"
-        } else {
-            "$minutes:$seconds"
-        }
+        return if (seconds < 10)
+            String.format("%d:0%d", minutes, seconds)
+        else
+            String.format("%d:%d", minutes, seconds)
     }
 
     fun getDisplayReleaseDate(): String {

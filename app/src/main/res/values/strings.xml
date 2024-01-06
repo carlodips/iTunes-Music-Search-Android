@@ -9,4 +9,5 @@
     <string name="genre">Genre</string>
     <string name="track_explicitness">Track Explicitness</string>
     <string name="release_date">Release Date</string>
+    <string name="results">Results</string>
 </resources>

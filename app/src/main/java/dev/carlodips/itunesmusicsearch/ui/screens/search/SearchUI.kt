@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,30 +30,36 @@ import dev.carlodips.itunesmusicsearch.R
 import dev.carlodips.itunesmusicsearch.data.remote.responses.SearchResult
 import dev.carlodips.itunesmusicsearch.ui.composable.BaseCard
 import dev.carlodips.itunesmusicsearch.ui.composable.CustomOutlinedTextField
+import dev.carlodips.itunesmusicsearch.utils.collectAsStateLifecycleAware
+import kotlinx.coroutines.flow.StateFlow
 
-data class SearchUIModel(
-    val input: MutableState<String>,
-    val results: SnapshotStateList<SearchResult>
-)
+sealed class SearchResultsUIState {
+    data object Loading : SearchResultsUIState()
+    data object Empty : SearchResultsUIState()
+    class ShowResults(
+        val results: SnapshotStateList<SearchResult>,
+        val navigateToDetails: (result: SearchResult) -> Unit
+    ) : SearchResultsUIState()
+}
 
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    uiModel: SearchUIModel,
+    input: MutableState<String>,
     onSearchClick: () -> Unit,
-    navigateToDetails: (result: SearchResult) -> Unit
+    uiState: StateFlow<SearchResultsUIState>
 ) {
+    val stateUiState = uiState.collectAsStateLifecycleAware(
+        SearchResultsUIState.Empty
+    )
+
     Surface(modifier = modifier.wrapContentSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-            //.verticalScroll(rememberScrollState())
-        ) {
+        Column(modifier = Modifier.fillMaxSize()) {
             Spacer(modifier = Modifier.height(24.dp))
 
             CustomOutlinedTextField(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                textValue = uiModel.input,
+                textValue = input,
                 label = ""
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -64,23 +72,48 @@ fun SearchScreen(
                 Text(text = stringResource(R.string.search))
             }
             Spacer(modifier = Modifier.height(16.dp))
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                itemsIndexed(uiModel.results) { index, item ->
-                    Spacer(modifier = Modifier.height(16.dp))
 
-                    ResultItem(
-                        bean = item,
-                        onItemClick = {
-                            navigateToDetails.invoke(item)
-                        }
-                    )
+            when (val currentUiState = stateUiState.value) {
+                is SearchResultsUIState.Empty -> Unit
 
-                    if (index == uiModel.results.lastIndex) {
+                is SearchResultsUIState.Loading -> {
+                    Column(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                         Spacer(modifier = Modifier.height(16.dp))
+                        CircularProgressIndicator(
+                            modifier = Modifier.width(32.dp),
+                            color = MaterialTheme.colorScheme.secondary,
+                            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                        )
                     }
                 }
+
+                is SearchResultsUIState.ShowResults -> {
+                    ResultsList(uiState = currentUiState)
+                }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun ResultsList(
+    modifier: Modifier = Modifier,
+    uiState: SearchResultsUIState.ShowResults
+) {
+    LazyColumn(modifier = modifier.fillMaxSize()) {
+        itemsIndexed(uiState.results) { index, item ->
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ResultItem(
+                bean = item,
+                onItemClick = {
+                    uiState.navigateToDetails.invoke(item)
+                }
+            )
+
+            if (index == uiState.results.lastIndex) {
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
