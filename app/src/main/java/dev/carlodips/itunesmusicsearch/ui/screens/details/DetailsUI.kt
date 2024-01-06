@@ -1,5 +1,6 @@
 package dev.carlodips.itunesmusicsearch.ui.screens.details
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,7 +35,8 @@ data class DetailsUIModel(
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,
-    uiModel: DetailsUIModel
+    uiModel: DetailsUIModel,
+    doOpenURL: (url: String) -> Unit
 ) {
     val bean = uiModel.bean
 
@@ -70,9 +73,12 @@ fun DetailsScreen(
                     text = stringResource(R.string.artist_name)
                 )
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .clickable { doOpenURL.invoke(bean.artistViewUrl) }
+                        .weight(1f),
                     style = MaterialTheme.typography.bodyLarge,
-                    text = bean.artistName
+                    text = bean.artistName,
+                    color = Color.Blue
                 )
             }
 
@@ -89,9 +95,12 @@ fun DetailsScreen(
                     text = stringResource(R.string.track_name)
                 )
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .clickable { doOpenURL.invoke(bean.trackViewUrl) }
+                        .weight(1f),
                     style = MaterialTheme.typography.bodyLarge,
-                    text = bean.trackName
+                    text = bean.trackName,
+                    color = Color.Blue
                 )
             }
 
@@ -103,14 +112,18 @@ fun DetailsScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f),
                     style = MaterialTheme.typography.bodyLarge,
                     text = stringResource(R.string.collection_name)
                 )
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .clickable { doOpenURL.invoke(bean.collectionViewUrl) }
+                        .weight(1f),
                     style = MaterialTheme.typography.bodyLarge,
-                    text = bean.collectionName
+                    text = bean.collectionName,
+                    color = Color.Blue
                 )
             }
 

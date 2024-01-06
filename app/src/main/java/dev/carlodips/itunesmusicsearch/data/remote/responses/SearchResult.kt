@@ -21,7 +21,11 @@ data class SearchResult(
     val releaseDate: String,
     @SerializedName("primaryGenreName")
     val genre: String,
-    val trackExplicitness: String
+    val trackExplicitness: String,
+
+    val artistViewUrl: String,
+    val trackViewUrl: String,
+    val collectionViewUrl: String
 ): Parcelable {
 
     fun getDisplayTrackTime(): String {
@@ -55,6 +59,9 @@ data class SearchResult(
         parcel.readLong(),
         parcel.readString()?: "",
         parcel.readString()?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
         parcel.readString() ?: ""
     )
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -68,6 +75,9 @@ data class SearchResult(
         parcel.writeString(releaseDate)
         parcel.writeString(genre)
         parcel.writeString(trackExplicitness)
+        parcel.writeString(artistViewUrl)
+        parcel.writeString(trackViewUrl)
+        parcel.writeString(collectionViewUrl)
     }
 
     override fun describeContents(): Int {

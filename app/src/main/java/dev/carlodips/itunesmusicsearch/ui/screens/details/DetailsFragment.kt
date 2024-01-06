@@ -1,5 +1,7 @@
 package dev.carlodips.itunesmusicsearch.ui.screens.details
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +20,15 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         return createComposeView {
-            DetailsScreen(uiModel = vm.uiModel)
+            DetailsScreen(
+                uiModel = vm.uiModel,
+                doOpenURL = ::openLinkInExternalBrowser
+            )
         }
+    }
+
+    private fun openLinkInExternalBrowser(url: String?) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(browserIntent)
     }
 }
