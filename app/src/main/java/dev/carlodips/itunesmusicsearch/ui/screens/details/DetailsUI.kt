@@ -165,7 +165,7 @@ fun DetailsScreen(
                 Text(
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.bodyLarge,
-                    text = bean.currency + " " + bean.trackPrice
+                    text = bean.getDisplayPrice()
                 )
             }
 

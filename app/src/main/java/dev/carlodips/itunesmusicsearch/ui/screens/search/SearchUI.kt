@@ -182,7 +182,7 @@ fun ResultItem(
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyMedium,
-                    text = bean.currency + " " + bean.trackPrice
+                    text = bean.getDisplayPrice()
                 )
             }
         }

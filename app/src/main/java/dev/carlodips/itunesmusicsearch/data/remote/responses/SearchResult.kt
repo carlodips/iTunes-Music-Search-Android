@@ -28,6 +28,10 @@ data class SearchResult(
     val collectionViewUrl: String
 ): Parcelable {
 
+    fun getDisplayPrice(): String {
+        return "$currency ${String.format("%.2f", trackPrice.toDouble())}"
+    }
+
     fun getFormattedTrackTime(): String {
         val millis = trackTimeMillis
         val minutes = TimeUnit.MILLISECONDS.toMinutes(millis)
