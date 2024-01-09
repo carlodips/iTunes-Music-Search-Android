@@ -19,9 +19,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -53,21 +57,29 @@ fun SearchScreen(
         SearchResultsUIState.Empty
     )
 
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
     Surface(modifier = modifier.wrapContentSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             Spacer(modifier = Modifier.height(24.dp))
 
             CustomOutlinedTextField(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .focusRequester(focusRequester),
                 textValue = input,
-                label = ""
+                label = stringResource(R.string.search_for_a_song)
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .align(Alignment.CenterHorizontally),
-                onClick = onSearchClick
+                onClick = {
+                    focusManager.clearFocus()
+                    onSearchClick.invoke()
+                }
             ) {
                 Text(text = stringResource(R.string.search))
             }

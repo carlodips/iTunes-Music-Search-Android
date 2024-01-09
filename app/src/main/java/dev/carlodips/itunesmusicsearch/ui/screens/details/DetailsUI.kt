@@ -53,7 +53,6 @@ fun DetailsScreen(
                 modifier = modifier
                     .widthIn(min = 100.dp)
                     .heightIn(min = 100.dp)
-                    .padding(start = 16.dp)
                     .align(Alignment.CenterHorizontally),
                 model = bean.artworkThumbnail,
                 placeholder = painterResource(id = R.drawable.ic_placeholder),
@@ -66,6 +65,7 @@ fun DetailsScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally)
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
@@ -88,6 +88,7 @@ fun DetailsScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally)
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
@@ -110,6 +111,7 @@ fun DetailsScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally)
             ) {
                 Text(
                     modifier = Modifier
@@ -133,6 +135,7 @@ fun DetailsScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally)
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
@@ -152,6 +155,7 @@ fun DetailsScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally)
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
@@ -171,6 +175,7 @@ fun DetailsScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally)
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
@@ -190,6 +195,7 @@ fun DetailsScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally)
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
@@ -209,6 +215,7 @@ fun DetailsScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally)
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
